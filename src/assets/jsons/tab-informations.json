@@ -1,0 +1,12 @@
+[
+    {
+      "id": "tab-1",
+      "name": "Products",
+      "iconCss": "fa fa-users"
+    },
+    {
+      "id": "tab-2",
+      "name": "Addons",
+      "iconCss": "fa fa-camera"
+    }
+]

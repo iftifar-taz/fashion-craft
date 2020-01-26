@@ -1,0 +1,3 @@
+<div *ngFor="let addon of addons" class="d-inline app-addon-viewer"
+    [addon]="addon" [viewerCoordinate]="viewerCoordinate" (deleteAddon)="onDeleteAddon($event)">
+</div>

@@ -1,0 +1,16 @@
+.tab {
+    background-color: #f2f5f6;
+}
+
+.tab:hover {
+    background-color: #d4dee1;
+    cursor: pointer;
+}
+
+.tab.active {
+    background-color: #d4dee1;
+}
+
+.fa {
+    font-size: 24px;
+}

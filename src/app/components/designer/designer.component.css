@@ -1,0 +1,9 @@
+:host {
+    min-width: 500px;
+    max-width: 500px;
+    min-height: 500px;
+    max-height: 500px;
+    background-size: contain;
+    position: relative;
+    border: 1px solid #673ab7;
+}

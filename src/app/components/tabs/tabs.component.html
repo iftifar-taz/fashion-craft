@@ -1,0 +1,13 @@
+<div class="d-flex flex-column">
+    <div class="tabs-container d-flex">
+        <div *ngFor="let tab of tabs" [ngClass]="{'active': selectedTab && selectedTab.id === tab.id}" class="tab px-4 py-2 d-flex flex-column align-items-center"
+            (click)="tabOnClick(tab)">
+            <i class="{{tab.iconCss}}"></i>
+            <span class="mt-1">{{tab.name}}</span>
+        </div>
+    </div>
+    <div *ngIf="selectedTab" class="tab-detail-container">
+        <div *ngIf="selectedTab.id === 'tab-1'" class="app-tab-product"></div>
+        <div *ngIf="selectedTab.id === 'tab-2'" class="app-tab-addon"></div>
+    </div>
+</div>

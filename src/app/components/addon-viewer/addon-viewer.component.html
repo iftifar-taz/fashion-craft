@@ -1,0 +1,18 @@
+<div #addonViewerContainer class="position-absolute addon-viewer-container">
+    <div class="position-absolute delete-container" title="Reset" (click)="onDeleteClick()">
+        <svg height="10" width="10">
+            <circle cx="5" cy="5" r="5" fill="#673ab7" />
+        </svg>
+    </div>
+    <div class="position-absolute rotator-container" title="Rotate" (mousedown)="onRotatorMouseDown($event)">
+        <svg height="10" width="10">
+            <circle cx="5" cy="5" r="5" fill="#673ab7" />
+        </svg>
+    </div>
+    <div class="position-absolute reset-container" title="Reset" (click)="onResetClick()">
+        <svg height="10" width="10">
+            <circle cx="5" cy="5" r="5" fill="#673ab7" />
+        </svg>
+    </div>
+    <div #imageContainer class="image-container" (mousedown)="onDragMouseDown($event)"></div>
+</div>

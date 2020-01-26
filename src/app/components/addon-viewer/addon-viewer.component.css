@@ -1,0 +1,39 @@
+:host {
+    display: inline;
+    min-width: 100px;
+    max-width: 100px;
+    min-height: 122px;
+    max-height: 122px;
+}
+
+.addon-viewer-container {
+    top: calc(50% - 60px);
+    left: calc(50% - 50px);
+}
+
+.addon-viewer-container .delete-container {
+    cursor: url('/assets/images/addon-actions/delete.png') 12 12, auto;
+    top: -16px;
+    left: -8px;
+}
+
+.addon-viewer-container .rotator-container {
+    cursor: url('/assets/images/addon-actions/rotate.png') 12 12, auto;
+    top: -16px;
+    right: -8px;
+}
+
+.addon-viewer-container .reset-container {
+    cursor: url('/assets/images/addon-actions/reset.png') 12 12, auto;
+    bottom: -15px;
+    right: -8px;
+}
+
+.addon-viewer-container .image-container {
+    min-width: 100px;
+    max-width: 100px;
+    min-height: 100px;
+    max-height: 100px;
+    background-size: contain;
+    border: 1px solid #673ab7;
+}
