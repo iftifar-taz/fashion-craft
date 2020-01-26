@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from 'src/app/services/product.service';
+import { Product } from 'src/app/models/product';
 
 @Component({
   selector: '.app-tab-product',
@@ -7,7 +8,7 @@ import { ProductService } from 'src/app/services/product.service';
   styleUrls: ['./tab-product.component.css']
 })
 export class TabProductComponent implements OnInit {
-  products: string[];
+  products: Product[];
 
   constructor(private productService: ProductService) { }
 
@@ -15,12 +16,12 @@ export class TabProductComponent implements OnInit {
     this.getProducts();
   }
 
-  onClick(product: string) {
+  onClick(product: Product) {
     this.productService.updateSelectedProduct(product);
   }
 
   private getProducts(): void {
-    this.productService.getProducts().subscribe((x: string[]) => {
+    this.productService.getProducts().subscribe((x: Product[]) => {
       this.products = x;
     });
   }

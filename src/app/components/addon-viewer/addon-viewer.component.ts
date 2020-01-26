@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild, AfterViewInit, HostListener, Input, ChangeDetectionStrategy, Output, EventEmitter } from '@angular/core';
 import { InitialCoordinates, Coordinate } from 'src/app/models/coordinates';
 import { Sign, Angle } from 'src/app/models/angle';
-import { BoundingInformation } from 'src/app/models/bounding-information';
-import { AddonInformation } from 'src/app/models/addon-information';
+import { BoundingCoordinates } from 'src/app/models/bounding-coordinates';
+import { SelectedAddon } from 'src/app/models/selected-addon';
+import { Addon } from 'src/app/models/addon';
 
 @Component({
   selector: '.app-addon-viewer',
@@ -12,18 +13,16 @@ import { AddonInformation } from 'src/app/models/addon-information';
 })
 export class AddonViewerComponent implements OnInit, AfterViewInit {
 
-  private rotatorHeight = -20;
   @ViewChild('addonViewerContainer', {static: false}) addonViewerContainer;
   @ViewChild('imageContainer', {static: false}) imageContainer;
 
-  @Input() addon: string;
-  @Input() viewerCoordinate: BoundingInformation;
+  @Input() addon: Addon;
+  @Input() viewerCoordinate: BoundingCoordinates;
 
-  @Output() deleteAddon: EventEmitter<string> = new EventEmitter<string>();
+  @Output() deleteAddon: EventEmitter<Addon> = new EventEmitter<Addon>();
 
-  private addonInformation: AddonInformation;
-  private initialRotatorCoordinates: InitialCoordinates;
-  private initialDraggerCoordinates: InitialCoordinates;
+  private selectedAddon: SelectedAddon;
+  private initialCoordinates: InitialCoordinates;
   private mouseLastKnownCoordinate: Coordinate;
   private rotating = false;
   private dragging = false;
@@ -35,13 +34,13 @@ export class AddonViewerComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.imageContainer.nativeElement.setAttribute('style', `background-image: url('${this.addon}');`);
-    this.setAddonInformation();
+    this.imageContainer.nativeElement.setAttribute('style', `background-image: url('${this.addon.url}');`);
+    this.setSelectedAddon();
     this.updateAddon();
   }
 
   onResetClick(): void {
-    this.resetAddonInformation();
+    this.resetSelectedAddon();
   }
 
   onDeleteClick(): void {
@@ -49,11 +48,8 @@ export class AddonViewerComponent implements OnInit, AfterViewInit {
   }
 
   onRotatorMouseDown(event: MouseEvent): void {
-    this.initialRotatorCoordinates = {
-      mouse: {
-        positionX: event.clientX,
-        positionY: event.clientY,
-      },
+    this.initialCoordinates = {
+      mouse: this.getEventMouseCoordinate(event),
       addon: {
         positionX: this.viewerCoordinate.left + this.imageContainer.nativeElement.offsetParent.offsetLeft
           + this.imageContainer.nativeElement.offsetParent.offsetWidth / 2,
@@ -65,11 +61,8 @@ export class AddonViewerComponent implements OnInit, AfterViewInit {
   }
 
   onDragMouseDown(event: MouseEvent): void {
-    this.initialDraggerCoordinates = {
-      mouse: {
-        positionX: event.clientX,
-        positionY: event.clientY,
-      },
+    this.initialCoordinates = {
+      mouse: this.getEventMouseCoordinate(event),
       addon: {
         positionX: this.imageContainer.nativeElement.offsetParent.offsetLeft,
         positionY: this.imageContainer.nativeElement.offsetParent.offsetTop,
@@ -92,8 +85,8 @@ export class AddonViewerComponent implements OnInit, AfterViewInit {
   onMouseUp(event): void {
     this.rotating = false;
     this.dragging = false;
-    if (this.initialRotatorCoordinates) {
-      this.previousAngle = this.addonInformation.angle;
+    if (this.initialCoordinates) {
+      this.previousAngle = this.selectedAddon.angle;
     }
   }
 
@@ -111,41 +104,41 @@ export class AddonViewerComponent implements OnInit, AfterViewInit {
   }
 
   private setDisplayAngle(): void {
-    if (this.initialRotatorCoordinates) {
+    if (this.initialCoordinates) {
       const angle: Angle =
-        this.findAngle(this.initialRotatorCoordinates.mouse, this.mouseLastKnownCoordinate, this.initialRotatorCoordinates.addon);
+        this.findAngle(this.initialCoordinates.mouse, this.mouseLastKnownCoordinate, this.initialCoordinates.addon);
       const currentAngle = angle.sign ===  Sign.POSITIVE ? angle.value : 360 - angle.value;
-      this.addonInformation.angle = (this.previousAngle + currentAngle) % 360;
+      this.selectedAddon.angle = (this.previousAngle + currentAngle) % 360;
     } else {
-      this.addonInformation.angle = 0;
+      this.selectedAddon.angle = 0;
     }
   }
 
   private setDisplayTop(): void {
-    if (this.initialDraggerCoordinates) {
-      let positionY = this.initialDraggerCoordinates.addon.positionY
+    if (this.initialCoordinates) {
+      let positionY = this.initialCoordinates.addon.positionY
       + this.mouseLastKnownCoordinate.positionY
-      - this.initialDraggerCoordinates.mouse.positionY;
-      positionY = positionY < this.rotatorHeight ? this.rotatorHeight : positionY;
+      - this.initialCoordinates.mouse.positionY;
+      positionY = positionY < 0 ? 0 : positionY;
       const allowedPositionY = this.viewerCoordinate.height - this.imageContainer.nativeElement.offsetParent.offsetHeight;
       positionY = positionY > allowedPositionY ? allowedPositionY : positionY;
-      this.addonInformation.top = positionY;
+      this.selectedAddon.top = positionY;
     } else {
-      this.addonInformation.top = 0;
+      this.selectedAddon.top = 0;
     }
   }
 
   private setDisplayLeft(): void {
-    if (this.initialDraggerCoordinates) {
-      let positionX = this.initialDraggerCoordinates.addon.positionX
+    if (this.initialCoordinates) {
+      let positionX = this.initialCoordinates.addon.positionX
         + this.mouseLastKnownCoordinate.positionX
-        - this.initialDraggerCoordinates.mouse.positionX;
+        - this.initialCoordinates.mouse.positionX;
       positionX = positionX < 0 ? 0 : positionX;
       const allowedPositionY = this.viewerCoordinate.width - this.imageContainer.nativeElement.offsetParent.offsetWidth;
       positionX = positionX > allowedPositionY ? allowedPositionY : positionX;
-      this.addonInformation.left = positionX;
+      this.selectedAddon.left = positionX;
     } else {
-      this.addonInformation.left = 0;
+      this.selectedAddon.left = 0;
     }
   }
 
@@ -158,28 +151,36 @@ export class AddonViewerComponent implements OnInit, AfterViewInit {
       this.setDisplayLeft();
       this.setDisplayTop();
     }
-    if (this.addonInformation) {
+    if (this.selectedAddon) {
       this.addonViewerContainer.nativeElement.setAttribute('style',
-        `transform: rotate(${this.addonInformation.angle}deg);
-        top: ${this.addonInformation.top}px;
-        left: ${this.addonInformation.left}px;`);
+        `transform: rotate(${this.selectedAddon.angle}deg);
+        top: ${this.selectedAddon.top}px;
+        left: ${this.selectedAddon.left}px;`);
     }
   }
 
-  private setAddonInformation(): void {
-    this.addonInformation = {
+  private setSelectedAddon(): void {
+    this.selectedAddon = {
       angle: 0,
       top: this.imageContainer.nativeElement.offsetParent.offsetTop,
       left: this.imageContainer.nativeElement.offsetParent.offsetLeft
     };
   }
 
-  private resetAddonInformation(): void {
+  private resetSelectedAddon(): void {
     this.addonViewerContainer.nativeElement.setAttribute('style',
       `transform: rotate(0deg);
       top: calc(50% - 60px);
       left: calc(50% - 50px)`);
 
-    this.setAddonInformation();
+    this.setSelectedAddon();
+    this.previousAngle = 0;
+  }
+
+  private getEventMouseCoordinate(event: MouseEvent): Coordinate {
+    return {
+      positionX: event.clientX,
+      positionY: event.clientY,
+    };
   }
 }

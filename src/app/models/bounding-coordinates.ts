@@ -1,4 +1,4 @@
-export interface BoundingInformation {
+export interface BoundingCoordinates {
     x: number;
     y: number;
     width: number;

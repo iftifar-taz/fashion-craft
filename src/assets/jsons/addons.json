@@ -1,4 +1,42 @@
 [
-    "/assets/images/charm-1.png",
-    "/assets/images/charm-2.png"
+    {
+        "url": "/assets/images/addons/addon-001.jpg",
+        "width": 100,
+        "height": 100
+    },
+    {
+        "url": "/assets/images/addons/addon-002.jpg",
+        "width": 100,
+        "height": 100
+    },
+    {
+        "url": "/assets/images/addons/addon-003.jpg",
+        "width": 100,
+        "height": 100
+    },
+    {
+        "url": "/assets/images/addons/addon-004.jpg",
+        "width": 100,
+        "height": 100
+    },
+    {
+        "url": "/assets/images/addons/addon-005.jpg",
+        "width": 200,
+        "height": 100
+    },
+    {
+        "url": "/assets/images/addons/addon-006.jpg",
+        "width": 200,
+        "height": 100
+    },
+    {
+        "url": "/assets/images/addons/addon-007.jpg",
+        "width": 100,
+        "height": 200
+    },
+    {
+        "url": "/assets/images/addons/addon-008.jpg",
+        "width": 100,
+        "height": 200
+    }
 ]

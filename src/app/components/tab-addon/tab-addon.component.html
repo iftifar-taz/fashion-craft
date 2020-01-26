@@ -1,5 +1,5 @@
-<div *ngFor="let url of addons" class="image-container" (click)="onClick(url)">
-    <img class="image" src="{{url}}" alt="image" width="100" height="100">
+<div *ngFor="let addon of addons" class="image-container" (click)="onClick(addon)">
+    <img class="image" src="{{addon.url}}" alt="image" width="100" height="100">
     <div class="overlay">
         <i class="fa fa-plus"></i>
     </div>

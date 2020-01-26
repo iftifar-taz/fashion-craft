@@ -1,8 +1,10 @@
 import { Component, OnInit, ElementRef, AfterViewInit } from '@angular/core';
-import { BoundingInformation } from 'src/app/models/bounding-information';
+import { BoundingCoordinates } from 'src/app/models/bounding-coordinates';
 import { ProductService } from 'src/app/services/product.service';
 import { Observable } from 'rxjs';
 import { AddonService } from 'src/app/services/addon.service';
+import { Addon } from 'src/app/models/addon';
+import { Product } from 'src/app/models/product';
 
 @Component({
   selector: '.app-designer',
@@ -11,9 +13,9 @@ import { AddonService } from 'src/app/services/addon.service';
 })
 export class DesignerComponent implements OnInit, AfterViewInit {
 
-  product: string;
-  addons: string[] = [];
-  viewerCoordinate: BoundingInformation;
+  product: Product;
+  addons: Addon[] = [];
+  viewerCoordinate: BoundingCoordinates;
 
   constructor(private e: ElementRef, private productService: ProductService, private addonService: AddonService) { }
 
@@ -26,24 +28,24 @@ export class DesignerComponent implements OnInit, AfterViewInit {
     this.viewerCoordinate = this.e.nativeElement.getBoundingClientRect();
   }
 
-  onDeleteAddon(addon: string): void {
+  onDeleteAddon(addon: Addon): void {
     if (addon && this.addons.includes(addon)) {
       this.addons.splice(this.addons.indexOf(addon), 1);
     }
   }
 
   private subscribeAddons(): void {
-    this.addonService.selectedAddon$.subscribe((x: string) => {
-      if (x && !this.addons.includes(x)) {
+    this.addonService.selectedAddon$.subscribe((x: Addon) => {
+      if (x && x.url && !this.addons.includes(x)) {
         this.addons.push(x);
       }
     });
   }
 
   private subscribeProduct(): void {
-    this.productService.selectedProduct$.subscribe((x: string) => {
+    this.productService.selectedProduct$.subscribe((x: Product) => {
       this.product = x;
-      this.e.nativeElement.setAttribute('style', `background-image: url('${this.product}');`);
+      this.e.nativeElement.setAttribute('style', `background-image: url('${this.product.url}');`);
     });
   }
 }

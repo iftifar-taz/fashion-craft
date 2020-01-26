@@ -1,5 +1,28 @@
 
 [
-    "/assets/images/charm-1.png",
-    "/assets/images/charm-2.png"
+    {
+        "url": "/assets/images/products/card-holder.jpg",
+        "width": 585,
+        "height": 460
+    },
+    {
+        "url": "/assets/images/products/laptop-bag.jpg",
+        "width": 781,
+        "height": 581
+    },
+    {
+        "url": "/assets/images/products/long-wallet.jpg",
+        "width": 421,
+        "height": 786
+    },
+    {
+        "url": "/assets/images/products/passport.jpg",
+        "width": 602,
+        "height": 819
+    },
+    {
+        "url": "/assets/images/products/short-wallet.jpg",
+        "width": 619,
+        "height": 530
+    }
 ]

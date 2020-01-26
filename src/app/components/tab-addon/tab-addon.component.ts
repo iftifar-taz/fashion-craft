@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AddonService } from 'src/app/services/addon.service';
+import { Addon } from 'src/app/models/addon';
 
 @Component({
   selector: '.app-tab-addon',
@@ -7,7 +8,7 @@ import { AddonService } from 'src/app/services/addon.service';
   styleUrls: ['./tab-addon.component.css']
 })
 export class TabAddonComponent implements OnInit {
-  addons: string[];
+  addons: Addon[];
 
   constructor(private addonService: AddonService) { }
 
@@ -15,12 +16,12 @@ export class TabAddonComponent implements OnInit {
     this.getAddonImages();
   }
 
-  onClick(addon: string) {
+  onClick(addon: Addon) {
     this.addonService.updateSelectedAddon(addon);
   }
 
   private getAddonImages(): void {
-    this.addonService.getAddons().subscribe((x: string[]) => {
+    this.addonService.getAddons().subscribe((x: Addon[]) => {
       this.addons = x;
     });
   }
